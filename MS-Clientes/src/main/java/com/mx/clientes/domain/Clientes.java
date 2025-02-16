@@ -23,4 +23,5 @@ public class Clientes {
 	private String nombre;
 	private String direccion;
 	private Long contacto;
+	private Long veterinariaId;
 }
