@@ -59,4 +59,9 @@ public class ClientesWS {
 				.orElseGet(()-> ResponseEntity.status(HttpStatus.NOT_FOUND)
 						.build());
 	}
+	
+	@PostMapping("veterinaria/{veterinariaId}")
+	public ResponseEntity<List<Clientes>> obtenerPorVeterinariaId(@PathVariable Long veterinariaId){
+		return ResponseEntity.status(HttpStatus.OK).body(service.getByVeterinariaId(veterinariaId));
+	}
 }

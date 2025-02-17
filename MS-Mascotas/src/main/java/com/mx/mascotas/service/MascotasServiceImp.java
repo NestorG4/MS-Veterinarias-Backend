@@ -38,5 +38,10 @@ public class MascotasServiceImp implements IMascotasService {
 		mascota.ifPresent(mascotas -> repository.delete(mascotas));
 		
 	}
+	
+	public List<Mascotas> getByVeterinariaId(Long veterinariaId){
+		return repository.findByVeterinariaId(veterinariaId); 
+	}
+
 
 }

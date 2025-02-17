@@ -38,5 +38,9 @@ public class ClientesServiceImp implements IClientesService {
 		Optional<Clientes> cliente = buscarClientes(idCliente);
 		cliente.ifPresent(clientes -> repository.delete(clientes));
 	}
+	
+	public List<Clientes> getByVeterinariaId(Long veterinariaId){
+		return repository.findByVeterinariaId(veterinariaId); 
+	}
 
 }

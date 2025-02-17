@@ -53,4 +53,9 @@ public class ResponsableWS {
 			return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 		}).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
 	}
+	
+	@PostMapping("veterinaria/{veterinariaId}")
+	public ResponseEntity<List<Responsables>> obtenerPorVeterinariaId(@PathVariable Long veterinariaId){
+		return ResponseEntity.status(HttpStatus.OK).body(service.getByVeterinariaId(veterinariaId));
+	}
 }

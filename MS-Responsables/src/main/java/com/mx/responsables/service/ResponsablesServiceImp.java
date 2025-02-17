@@ -39,5 +39,9 @@ public class ResponsablesServiceImp implements IResponsablesService{
 		responsable.ifPresent(responsables -> repository.delete(responsables));
 		
 	}
+	
+	public List<Responsables> getByVeterinariaId(Long veterinariaId){
+		return repository.findByVeterinariaId(veterinariaId); 
+	}
 
 }
