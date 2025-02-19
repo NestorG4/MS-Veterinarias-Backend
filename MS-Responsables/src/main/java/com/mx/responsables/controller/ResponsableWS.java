@@ -20,7 +20,6 @@ import com.mx.responsables.service.ResponsablesServiceImp;
 
 @RestController
 @RequestMapping("Responsables")
-@CrossOrigin("*")
 public class ResponsableWS {
 
 	@Autowired

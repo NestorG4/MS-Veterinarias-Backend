@@ -25,7 +25,6 @@ import com.mx.centroveterinario.service.VeterinariasServiceImp;
 
 @RestController
 @RequestMapping("Veterinarias")
-@CrossOrigin("*")
 public class VeterinariasWS {
 	
 	@Autowired

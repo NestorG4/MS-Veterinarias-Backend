@@ -20,7 +20,6 @@ import com.mx.mascotas.service.MascotasServiceImp;
 
 @RestController
 @RequestMapping("Mascotas")
-@CrossOrigin("*")
 public class MascotasWS {
 	
 	@Autowired

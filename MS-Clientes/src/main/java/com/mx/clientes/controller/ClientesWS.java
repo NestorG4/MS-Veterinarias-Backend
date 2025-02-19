@@ -20,7 +20,6 @@ import com.mx.clientes.service.ClientesServiceImp;
 
 @RestController
 @RequestMapping("Clientes")
-@CrossOrigin("*")
 public class ClientesWS {
 	
 	@Autowired
