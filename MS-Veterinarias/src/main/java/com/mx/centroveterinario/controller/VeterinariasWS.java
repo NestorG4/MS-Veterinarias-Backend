@@ -23,14 +23,20 @@ import com.mx.centroveterinario.models.Mascotas;
 import com.mx.centroveterinario.models.Responsables;
 import com.mx.centroveterinario.service.VeterinariasServiceImp;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("Veterinarias")
+@Tag(name= "Veterinarias", description = "Gestion de veterinarias")
 public class VeterinariasWS {
 	
 	@Autowired
 	private VeterinariasServiceImp service;
 	
 	@GetMapping("listar")
+	@Operation(summary = "Enpoint que lista todas las veterinarias disponibles", 
+				description = "Recupera la lista con todos las veterinarias registradas en el sistema")
 	public ResponseEntity<List<Veterinarias>> listar(){
 		List<Veterinarias> veterinarias = service.veterinarias();
 		return Optional.of(veterinarias).filter(v -> !v.isEmpty()).map(ResponseEntity::ok)
@@ -38,6 +44,8 @@ public class VeterinariasWS {
 	}
 	
 	@PostMapping("/guardar")
+	@Operation(summary = "Guardar una veterinaria", 
+				description = "Recibe un objeto de tipo veterinaria y lo guarda en la base de datos. Retorna la veterinaria guardada si la operacion fue exitosa")
 	public ResponseEntity<Veterinarias> guardarVeterinaria(@RequestBody Veterinarias veterinarias){
 		return Optional.ofNullable(service.guardarVeterinaria(veterinarias))
 				.map(v -> ResponseEntity.status(HttpStatus.CREATED).body(v))
@@ -46,6 +54,8 @@ public class VeterinariasWS {
 	}
 	
 	@PostMapping("/buscar/{idVeterinaria}")
+	@Operation(summary = "Buscar una veterinaria", 
+				description = "Recibe el ID de una veterinaria y la retorna si fue encontrada. Si no existe retorna codigo 404")
 	public ResponseEntity<Veterinarias> buscarVeterinaria(@PathVariable Long idVeterinaria){
 		return service.buscarVeterinaria(idVeterinaria)
 				.map(ResponseEntity::ok)
@@ -53,6 +63,9 @@ public class VeterinariasWS {
 	}
 	
 	@DeleteMapping("/eliminar/{idVeterinaria}")
+	@Operation(summary = "Elimina una veterinaria", 
+				description = "Recibe el ID de una veterinaria, la elimina si fue encontra y responde con codigo 204."
+						+ "Si no es encontrada, responde con un codigo 404")
 	public ResponseEntity<?> eliminarVeterinaria(@PathVariable Long idVeterinaria){
 		return service.buscarVeterinaria(idVeterinaria)
 				.map(veterinaria -> {
@@ -66,12 +79,16 @@ public class VeterinariasWS {
 	//Endpoints pra FeignClient para responsables
 	
 	@PostMapping("/Resposables")
+	@Operation(summary = "Guardar responsables", 
+				description = "Recibe un objeto de tipo veterinarias y lo guarda en la base de datos")
 	public ResponseEntity<Responsables> guardarResponsables(@RequestBody Responsables responsables){
 		Responsables responsable = service.guardarResponsable(responsables);
 		return ResponseEntity.status(HttpStatus.CREATED).body(responsable); 
 	}
 	
 	@PostMapping("/Responsables/veterinaria/{veterinariaId}")
+	@Operation(summary = "Obtener responsables por veterinaria", 
+				description = "Recibe el ID de una veterinaria y retorna la lista de responsables asociados")
 	public ResponseEntity<?> obtenerVeterinariasPorVeterinariasId(@PathVariable Long veterinariaId){
 		List<Responsables> responsables = service.obtenerResponsables(veterinariaId); 
 		if (responsables.isEmpty()) {
@@ -83,6 +100,8 @@ public class VeterinariasWS {
 	
 	//Endpoint para RestTemplate para Clientes
 	@PostMapping("/Clientes")
+	@Operation(summary = "Guardar un cliente", 
+				description = "Recibe un objeto Cliente y lo guarda en la base de datos.")
 	public ResponseEntity<?> guardarCliente(@RequestBody Clientes clientes){
 		Clientes cliente = service.saveClientes(clientes); 
 		if (clientes== null) {
@@ -93,6 +112,8 @@ public class VeterinariasWS {
 	}
 	
 	@PostMapping("/Clientes/veterinaria/{veterinariaId}")
+	@Operation(summary = "Obtener clientes por veterinaria", 
+				description = "Recibe el ID de una veterinaria y retorna la lista de clientes asociados.")
 	public ResponseEntity<?> obtenerClientesPorTiendaId(@PathVariable Long veterinariaId){
 		List<Clientes> clientes = service.getClientes(veterinariaId); 
 		if (clientes.isEmpty()) {
@@ -104,12 +125,16 @@ public class VeterinariasWS {
 	
 	//Endpoint para FeignClient de Mascotas
 	@PostMapping("/Mascotas")
+	@Operation(summary = "Guardar una mascota", 
+				description = "Recibe un objeto Mascota y lo guarda en la base de datos.")
 	public ResponseEntity<Mascotas> guardarMascotas(@RequestBody Mascotas mascotas){
 		Mascotas mascota = service.guardarMascotas(mascotas);
 		return ResponseEntity.status(HttpStatus.CREATED).body(mascota); 
 	}
 	
 	@PostMapping("/Mascotas/veterinaria/{veterinariaId}")
+	@Operation(summary = "Obtener mascotas por veterinaria", 
+				description = "Recibe el ID de una veterinaria y retorna la lista de mascotas asociadas.")
 	public ResponseEntity<?> obtenerMascotasPorVeterinariasId(@PathVariable Long veterinariaId){
 		List<Mascotas> mascotas = service.obtenerMascotas(veterinariaId);
 		if (mascotas.isEmpty()) {
@@ -121,6 +146,8 @@ public class VeterinariasWS {
 	
 	//**************Obtener Veterinarias completas
 	@PostMapping("Datos/{tiendaId}")
+	@Operation(summary = "Obtener datos completos de la veterinaria", 
+				description = "Recibe el ID de una tienda y retorna toda la información relacionada.")
 	public ResponseEntity<?> datosTienda(@PathVariable Long tiendaId){
 		Map<String, Object> datos = service.datosVeterinaria(tiendaId); 
 		return ResponseEntity.ok(datos);

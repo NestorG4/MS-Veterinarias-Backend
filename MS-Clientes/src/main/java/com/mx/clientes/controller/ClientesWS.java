@@ -18,14 +18,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.mx.clientes.domain.Clientes;
 import com.mx.clientes.service.ClientesServiceImp;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("Clientes")
+@Tag(name = "Clientes", description = "Gestion de clientes")
 public class ClientesWS {
 	
 	@Autowired
 	private ClientesServiceImp service;
 	
 	@GetMapping("/listar")
+	@Operation(summary = "Listar clientes", description = "Retorna una lista de todos los clientes registrados.")
 	public ResponseEntity<List<Clientes>> listar(){
 		List<Clientes> clientes = service.listar();
 		return Optional.of(clientes)
@@ -35,6 +40,7 @@ public class ClientesWS {
 	}
 	
 	@PostMapping("/guardar")
+	@Operation(summary = "Guardar un cliente", description = "Recibe un objeto Cliente y lo guarda en la base de datos.")
 	public ResponseEntity<Clientes> guardarClientes(@RequestBody Clientes clientes){
 		return Optional.ofNullable(service.guardarClientes(clientes))
 				.map(c -> ResponseEntity.status(HttpStatus.CREATED).body(c))
@@ -42,6 +48,7 @@ public class ClientesWS {
 	}
 	
 	@PostMapping("/buscar/{idCliente}")
+	@Operation(summary = "Buscar un cliente por ID", description = "Recibe el ID de un cliente y lo retorna si fue encontrado.")
 	public ResponseEntity<Clientes> buscarClientes(@PathVariable Long idCliente){
 		return service.buscarClientes(idCliente)
 				.map(ResponseEntity::ok)
@@ -49,6 +56,7 @@ public class ClientesWS {
 	}
 	
 	@DeleteMapping("/eliminar/{idCliente}")
+	@Operation(summary = "Eliminar un cliente", description = "Recibe el ID de un cliente y lo elimina si existe.")
 	public ResponseEntity<?> eliminarClientes(@PathVariable Long idCliente){
 		return service.buscarClientes(idCliente)
 				.map(veterinaria ->{
@@ -60,6 +68,7 @@ public class ClientesWS {
 	}
 	
 	@PostMapping("veterinaria/{veterinariaId}")
+	@Operation(summary = "Obtener clientes por veterinaria", description = "Recibe el ID de una veterinaria y retorna la lista de clientes asociados.")
 	public ResponseEntity<List<Clientes>> obtenerPorVeterinariaId(@PathVariable Long veterinariaId){
 		return ResponseEntity.status(HttpStatus.OK).body(service.getByVeterinariaId(veterinariaId));
 	}
